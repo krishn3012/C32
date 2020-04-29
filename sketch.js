@@ -10,9 +10,14 @@ var bird, slingshot;
 
 var gameState = "onSling";
 
+var bgIMG, bg;
+
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
+  
+
+    getBackgroundImg();
 }
+
 
 function setup(){
     var canvas = createCanvas(1200,400);
@@ -42,31 +47,37 @@ function setup(){
 
     //log6 = new Log(230,180,80, PI/2);
     slingshot = new SlingShot(bird.body,{x:200, y:50});
+
+
 }
 
 function draw(){
-    background(backgroundImg);
-    Engine.update(engine);
-    //strokeWeight(4);
-    box1.display();
-    box2.display();
-    ground.display();
-    pig1.display();
-    log1.display();
+    if (bgIMG !== null){
+        background(bgIMG);
+        Engine.update(engine);
+        //strokeWeight(4);
+        box1.display();
+        box2.display();
+        ground.display();
+        pig1.display();
+        log1.display();
+    
+        box3.display();
+        box4.display();
+        pig3.display();
+        log3.display();
+    
+        box5.display();
+        log4.display();
+        log5.display();
+    
+        bird.display();
+        platform.display();
+        //log6.display();
+        slingshot.display();    
+    }
+    
 
-    box3.display();
-    box4.display();
-    pig3.display();
-    log3.display();
-
-    box5.display();
-    log4.display();
-    log5.display();
-
-    bird.display();
-    platform.display();
-    //log6.display();
-    slingshot.display();    
 }
 
 function mouseDragged(){
@@ -85,4 +96,25 @@ function keyPressed(){
     if(keyCode === 32){
        // slingshot.attach(bird.body);
     }
+}
+
+async function getBackgroundImg(){
+    var fetchAPI = await fetch("http://worldtimeapi.org/timezone/Asia/kolkata");
+    console.log(fetchAPI);
+    var responseJSON = await fetchAPI.json();
+    console.log(responseJSON);
+    var dateTime= responseJSON.datetime;
+    console.log(dateTime);
+    var hr = dateTime.slice(11,13);
+    if ((hr>6) && (hr<18)){
+        bg="sprites/bg.png";
+    }
+    else{
+        bg="sprites/bg2.jpg";
+    }
+    bgIMG= loadImage(bg);
+
+    console.log(hr)
+    console.log(bg)
+    
 }
